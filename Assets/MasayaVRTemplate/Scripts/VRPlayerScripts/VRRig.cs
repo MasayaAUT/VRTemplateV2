@@ -1,11 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.XR;
 
+
 public class VRRig : MonoBehaviour
 {
+    VRActions inputs;
+
     [SerializeField] Color outlineColor;
     public static VRRig Instance { get; private set; }
     [field: SerializeField] public Transform head { get; private set; }
@@ -40,11 +46,17 @@ public class VRRig : MonoBehaviour
         Trigger, Grip, Thumbstick, Primary, Secondary
     }
 
+
     private void Start()
     {
         Instance = this;
         List<XRDisplaySubsystem> vrDisplays = new List<XRDisplaySubsystem>();
         SubsystemManager.GetSubsystems(vrDisplays);
+
+        inputs = new VRActions();
+        inputs.Enable();
+
+
 
         if (vrDisplays.Count == 0)
         {
@@ -74,8 +86,33 @@ public class VRRig : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    private List<UnityEngine.XR.InputDevice> controllersXR = new();
+
     private void Update()
     {
+
+        controllersXR.Clear();
+
+        UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(
+            UnityEngine.XR.InputDeviceCharacteristics.Controller,
+            controllersXR
+        );
+
+        foreach (UnityEngine.XR.InputDevice device in controllersXR)
+        {
+            Vector2 stick;
+
+            bool success = device.TryGetFeatureValue(
+                UnityEngine.XR.CommonUsages.primary2DAxis,
+                out stick
+            );
+
+            if (success)
+            {
+                Debug.Log($"{device.name}: Stick = {stick}");
+            }
+        }
+
         UpdateCollider();
         UpdateVignette();
     }

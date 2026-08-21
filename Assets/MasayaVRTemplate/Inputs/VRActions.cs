@@ -279,6 +279,17 @@ public partial class @VRActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""739c55ca-6fff-4d3c-a7a1-41476197f49c"",
+                    ""path"": ""MetaQuestTouchPlusControllerOpenXR>/thumbstick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnalogValue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""17e475d9-3908-4d61-9909-1188c69dd02d"",
                     ""path"": ""<XRController>/{PrimaryButton}"",
                     ""interactions"": """",
